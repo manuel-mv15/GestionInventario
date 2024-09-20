@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Carlo\\source\\repos\\GestionInventario\\GestionInventario\\GestionInventario.csproj",
+      "projectUniqueName": "C:\\Users\\Carlo\\source\\repos\\Esturcutra de datos\\Computo 2\\Lab\\GestionInventario\\GestionInventario\\GestionInventario.csproj",
       "projectName": "GestionInventario",
-      "projectPath": "C:\\Users\\Carlo\\source\\repos\\GestionInventario\\GestionInventario\\GestionInventario.csproj",
+      "projectPath": "C:\\Users\\Carlo\\source\\repos\\Esturcutra de datos\\Computo 2\\Lab\\GestionInventario\\GestionInventario\\GestionInventario.csproj",
       "packagesPath": "C:\\Users\\Carlo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Carlo\\source\\repos\\GestionInventario\\GestionInventario\\obj\\",
+      "outputPath": "C:\\Users\\Carlo\\source\\repos\\Esturcutra de datos\\Computo 2\\Lab\\GestionInventario\\GestionInventario\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
