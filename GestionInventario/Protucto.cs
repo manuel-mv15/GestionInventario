@@ -18,11 +18,6 @@ namespace GestionInventario
         List<Lote> loteCostoPromedio = new List<Lote>();
         List<Lote> loteHistorial = new List<Lote>();
 
-        public void eliminar(int unidades)
-        {
-            List<Lote> loteCostoPromedio = new List<Lote>();
-        }
-
         public Producto()
         {
 
@@ -76,13 +71,9 @@ namespace GestionInventario
 
         }
 
-
-
-
         //--- PEPS Queue
         static void salidaPEPS(Stack<Lote> loteUEPS, Queue<Lote> lotePEPS, List<Lote> loteCostoPromedio)
         {
-            int id;
             Console.Clear();
             Console.WriteLine("Eliminar unidades");
             int unidades = valInt(0);
@@ -102,7 +93,6 @@ namespace GestionInventario
                 }
                 else
                 {
-                    id = lote.idLote;
                     lote.unidades -= unidades;
                     eliminarParcialLoteUEPS(loteUEPS, lotePEPS.Peek(), unidades);
                     eliminarParcialLoteCostePromedio(loteCostoPromedio, lote, unidades);
@@ -110,6 +100,7 @@ namespace GestionInventario
                 }
             }
         }
+        
         static void eliminarLotePEPS(Queue<Lote> lotePEPS, Lote loteEliminar)
         {
             Queue<Lote> loteTem = new Queue<Lote>();
@@ -148,12 +139,10 @@ namespace GestionInventario
                 lotePEPS.Enqueue(loteTem.Dequeue());
             }
         }
-
         //--------------------------------------
         // UEPS Stack
         static void salidaUEPS(Stack<Lote> loteUEPS, Queue<Lote> lotePEPS, List<Lote> loteCostoPromedio)
         {
-
             Console.Clear();
             Console.WriteLine("Eliminar unidades");
             int unidades = valInt(0);
@@ -222,7 +211,7 @@ namespace GestionInventario
                 loteUEPS.Push(loteTemp.Pop());
             }
         }
-        //----------------------------------------------------
+        //---------------------------------------
         // coste promedio 
         public void salidaCostoPromedio(Stack<Lote> loteUEPS, Queue<Lote> lotePEPS, List<Lote> loteCostoPromedio)
         {
@@ -280,7 +269,6 @@ namespace GestionInventario
             }
         }
 
-        // Eliminar parcialmente unidades del lote en el costo promedio
         static void eliminarParcialLoteCostePromedio(List<Lote> loteCostoPromedio, Lote loteEliminar, int unidades)
         {
             Lote loteTem = loteCostoPromedio.FirstOrDefault(l => l.Equals(loteEliminar));
@@ -289,13 +277,11 @@ namespace GestionInventario
                 loteTem.unidades -= unidades;
             }
         }
-        //---
-
-
+        //---------------------------------------
 
         public override string ToString()
         {
-            return $"nombre";
+            return $"Id: {this.id}, Nombre: {this.nombre}, Categoría: {this.categoria}";
         }
         static int valInt(int limit)
         {

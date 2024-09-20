@@ -25,18 +25,6 @@ namespace GestionInventario
         {
             return $"Id: {idLote}, Unidades: {unidades}, Detalle: {detalle}, Precio: {precio.ToString("$0.00")} Fecha de ingreso: {fecha}.";
         }
-        public override bool Equals(object obj)
-        {
-            if (obj is Lote lote)
-            {
-                return idLote == lote.idLote; // Comparamos por ID de lote
-            }
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return idLote.GetHashCode();
-        }
+       
     }
 }

@@ -6,10 +6,10 @@ namespace GestionInventario
         static void Main(string[] args)
         {
             Dictionary<String, Producto> Inventario = new Dictionary<String, Producto>();
+            int opmneu = 0;
+            
 
-
-
-
+             
             
 
 
