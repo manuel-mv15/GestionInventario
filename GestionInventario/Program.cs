@@ -1,6 +1,4 @@
 ﻿using System;
-using GestionInventario.Metodos;
-using Metodos;
 namespace GestionInventario
 {
     internal class Program
@@ -12,18 +10,17 @@ namespace GestionInventario
 
 
 
-
-
-           
-
+            
 
 
 
 
-           
+
+
+
+
         }
-
-  
+       
 
         static Dictionary<String, Producto> agregarProducto(Dictionary<String, Producto> inventario)
         {
@@ -86,7 +83,23 @@ namespace GestionInventario
         }
 
 
-        
+
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
