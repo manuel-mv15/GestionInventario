@@ -4,6 +4,7 @@ namespace Metodos
 {
     internal class Lote
     {
+      public  int idLote;
      public   int unidades { get; set; }
         DateTime fecha { get; set; }
       public  double precio { get; set; }
@@ -12,8 +13,9 @@ namespace Metodos
         {
             
         }
-        public Lote(int unidades, DateTime fecha, double precio, string detalle)
+        public Lote(int idLote,int unidades, DateTime fecha, double precio, string detalle)
         {
+            this.idLote= idLote;
             this.unidades = unidades;
             this.fecha = fecha;
             this.precio = precio;
@@ -22,7 +24,7 @@ namespace Metodos
 
         public override string ToString()
         {
-            return $"Unidades: {unidades},Detalle: {detalle}, Precio: {precio.ToString("$0.00")} Fecha de ingreso: {fecha}.";
+            return $"Id: {idLote},Unidades: {unidades},Detalle: {detalle}, Precio: {precio.ToString("$0.00")} Fecha de ingreso: {fecha}.";
         }
 
     }

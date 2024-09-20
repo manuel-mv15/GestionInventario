@@ -13,7 +13,7 @@ namespace GestionInventario.Metodos
         int id { get; set; }
         string nombre { get; set; }
         string categoria { get; set; }
-
+        int idLote = 1;
         
         Stack<Lote> loteUEPS = new Stack<Lote>();
         Queue<Lote> lotePEPS = new Queue<Lote>();
@@ -50,7 +50,10 @@ namespace GestionInventario.Metodos
             fecha = DateTime.Now;
             Console.WriteLine("Detalle");
             detalle = Console.ReadLine();
-            loteUEPS.Push(new Lote(unidades, fecha, precio,detalle));
+            loteUEPS.Push(new Lote(idLote++,unidades, fecha, precio,detalle));
+            lotePEPS.Enqueue(new Lote(id++, unidades, fecha, precio, detalle));
+            loteCostoPromedio.Add(new Lote(id++, unidades, fecha, precio, detalle));
+            loteHistorial.Add(new Lote(id++, unidades, fecha, precio, detalle));
 
         }
         

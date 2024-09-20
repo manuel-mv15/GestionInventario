@@ -13,8 +13,18 @@ namespace GestionInventario
 
 
 
+
+           
+
+
+
+
+
            
         }
+
+  
+
         static Dictionary<String, Producto> agregarProducto(Dictionary<String, Producto> inventario)
         {
             string nombre = Console.ReadLine();
@@ -76,54 +86,7 @@ namespace GestionInventario
         }
 
 
-        public void EliminarProductoDeColaYPila(Queue<Producto> cola, Stack<Producto> pila, Producto productoAEliminar)
-        {
-            // Eliminar de la cola
-            EliminarDeCola(cola, productoAEliminar);
-
-            // Eliminar de la pila
-            EliminarDePila(pila, productoAEliminar);
-        }
-
-        private void EliminarDeCola(Queue<Producto> cola, Producto productoAEliminar)
-        {
-            Queue<Producto> colaTemporal = new Queue<Producto>();
-
-            while (cola.Count > 0)
-            {
-                Producto producto = cola.Dequeue();
-                if (!producto.Equals(productoAEliminar)) // Si no es el producto a eliminar
-                {
-                    colaTemporal.Enqueue(producto); // Lo guardamos en la cola temporal
-                }
-            }
-
-            // Pasamos los elementos de vuelta a la cola original
-            while (colaTemporal.Count > 0)
-            {
-                cola.Enqueue(colaTemporal.Dequeue());
-            }
-        }
-
-        private void EliminarDePila(Stack<Producto> pila, Producto productoAEliminar)
-        {
-            Stack<Producto> pilaTemporal = new Stack<Producto>();
-
-            while (pila.Count > 0)
-            {
-                Producto producto = pila.Pop();
-                if (!producto.Equals(productoAEliminar)) // Si no es el producto a eliminar
-                {
-                    pilaTemporal.Push(producto); // Lo guardamos en la pila temporal
-                }
-            }
-
-            // Pasamos los elementos de vuelta a la pila original
-            while (pilaTemporal.Count > 0)
-            {
-                pila.Push(pilaTemporal.Pop());
-            }
-        }
+        
 
     }
 }
