@@ -20,7 +20,10 @@ namespace GestionInventario
             this.precio = precio;
             this.detalle = detalle;
         }
-
+        public string factura(int cantidad)
+        {
+            return $"Unidades: {unidades}. Precio: {precio}. Costo total: {precio * (double)cantidad}";
+        }
         public override string ToString()
         {
             return $"Id: {idLote}, Unidades: {unidades}, Detalle: {detalle}, Precio: {precio.ToString("$0.00")} Fecha de ingreso: {fecha}.";
