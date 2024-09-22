@@ -12,9 +12,9 @@ namespace GestionInventario
         string categoria { get; set; }
         int idLote = 1;
 
-        Stack<Lote> loteUEPS = new Stack<Lote>();
-        Queue<Lote> lotePEPS = new Queue<Lote>();
-        List<Lote> loteCostoPromedio = new List<Lote>();
+       public Stack<Lote> loteUEPS = new Stack<Lote>();
+        public Queue<Lote> lotePEPS = new Queue<Lote>();
+        public List<Lote> loteCostoPromedio = new List<Lote>();
         List<Lote> loteHistorial = new List<Lote>();
 
         public Producto()
@@ -35,11 +35,11 @@ namespace GestionInventario
             double precio;
             string detalle;
             Console.WriteLine("Unidades");
-            unidades = valInt(0);
+            unidades = valInt(1);
             Console.WriteLine("Precio");
             precio = valDou(0);
             fecha = DateTime.Now;
-            Console.WriteLine("Detalle");
+            Console.WriteLine("Detalles del producto");
             detalle = Console.ReadLine();
             loteUEPS.Push(new Lote(idLote, unidades, fecha, precio, detalle));
             lotePEPS.Enqueue(new Lote(idLote, unidades, fecha, precio, detalle));
@@ -63,15 +63,21 @@ namespace GestionInventario
             if (opMetodo==1)
             {
 
+                Thread.Sleep(100);
                 Console.WriteLine("Seleccione el metodo");
+                Thread.Sleep(100);
                 Console.WriteLine("1. Metodo UEPS");
+                Thread.Sleep(100);
                 Console.WriteLine("2. Metodo PEPS");
+                Thread.Sleep(100);
                 Console.WriteLine("3. Metodo Costo Promedio");
+                Thread.Sleep(100);
                 Console.WriteLine("4. Salir");
                 opMetodo = valEntre(1, 4);
 
                 int unidades;
 
+                Thread.Sleep(100);
                 Console.WriteLine("Ingrese el numero de uinidades");
                 unidades = valEntre(1,totalunidades);
 
@@ -245,6 +251,7 @@ namespace GestionInventario
             int totalunidades = loteCostoPromedio.Sum(l => l.unidades);
             if (unidades > totalunidades)
             {
+                Thread.Sleep(100);
                 Console.WriteLine("No hay suficientes unidades en el inventario.");
                 return;
             }
@@ -253,6 +260,7 @@ namespace GestionInventario
             double costoTotal = loteCostoPromedio.Sum(l => l.precio * l.unidades);
             double costoPromedio = costoTotal / totalunidades;
 
+            Thread.Sleep(100);
             Console.WriteLine($"El costo promedio por unidad es: {costoPromedio}");
 
             // Paso 3: Eliminar unidades desde el inventario
@@ -286,6 +294,7 @@ namespace GestionInventario
                 }
             }
 
+            Thread.Sleep(100);
             Console.WriteLine("unidades eliminadas correctamente.");
         }
 
@@ -339,12 +348,11 @@ namespace GestionInventario
             int numero = 0;
             string entrada = "";
 
-            Console.Write("Ingrese el numero mayor a {0}: ", limit);
             entrada = Console.ReadLine();
 
-            while (!int.TryParse(entrada, out numero) || !(numero > limit))
+            while (!int.TryParse(entrada, out numero) || !(numero >= limit))
             {
-                Console.WriteLine("Ingrese el numero mayor a {0} ", limit);
+                Console.WriteLine("Ingrese el numero mayor o igual a {0} ", limit);
                 Console.Write("Ingrese el numero: ");
                 entrada = Console.ReadLine();
             }
@@ -356,7 +364,6 @@ namespace GestionInventario
             int numero = 0;
             string entrada = "";
 
-            Console.Write("Ingrese el numero entre {0} y {1}: ", min, max);
             entrada = Console.ReadLine();
 
             while (!int.TryParse(entrada, out numero) || !(numero >= min && numero <= max))
@@ -373,7 +380,6 @@ namespace GestionInventario
             double numero = 0;
             string entrada = "";
 
-            Console.Write("Ingrese el numero mayor a {0}: ", limit);
             entrada = Console.ReadLine();
 
             while (!double.TryParse(entrada, out numero) || !(numero > limit))
@@ -384,5 +390,6 @@ namespace GestionInventario
             }
             return numero;
         }
+
     }
 }
