@@ -25,30 +25,70 @@ namespace GestionInventario
                 Thread.Sleep(100);
                 Console.WriteLine("                                                                                            ");
                                                                                    
-                Thread.Sleep(400);
+                Thread.Sleep(100);
                 Console.WriteLine("--- Menú de Inventario ---");
                 Thread.Sleep(100);
-                Console.WriteLine("1. Agregar Producto");
+                Console.WriteLine("1. Agregar");
                 Thread.Sleep(100);
                 Console.WriteLine("2. Productos");
                 Thread.Sleep(100);
-                Console.WriteLine("3. Ver Lotes");
+                Console.WriteLine("3. vender");
                 Thread.Sleep(100);
+
                 Console.WriteLine("4. Salir");
                 Thread.Sleep(100);
                 Console.Write("Seleccione una opción: ");
-                opmneu = valEntre(1, 4);
+                opmneu = valEntre(1, 3);
                 Console.Clear();
                 switch (opmneu)
                 {
                     case 1:
-                       Inventario = agregarProducto(Inventario);
+                        Thread.Sleep(100);
+                        Console.WriteLine("--- Menú  ---");
+                        Thread.Sleep(100);
+                        Console.WriteLine("1. Agregar Producto");
+                        Thread.Sleep(100);
+                        Console.WriteLine("2. Agregar lote");
+                        Thread.Sleep(100);
+                        Console.WriteLine("3. Salir");
+                        Thread.Sleep(100);
+                        Console.Write("Seleccione una opción: ");
+                        opmneu = valEntre(1, 3);
+
+                        if (opmneu==1)
+                        {
+                            Inventario = agregarProducto(Inventario);
+                        }
+                        if (Inventario.Count > 0 && opmneu == 2)
+                        {
+                            Console.Clear();
+                            mostrarInventario(Inventario);
+
+                            Thread.Sleep(100);
+                            Console.WriteLine("Ingrese el código del producto:");
+                            codigo = valInt(1);
+                            if (!Inventario.ContainsKey(codigo))
+                            {
+                                Thread.Sleep(100);
+                                Console.WriteLine("Código de producto no encontrado.");
+                                break;
+                            }
+                            else
+                            {
+                                Inventario[codigo].Entrada();
+                            }
+                       }
+                        else if(!(Inventario.Count > 0))
+                        {
+                            Console.WriteLine("Todavía no hay productos existentes");
+                        }
                         break;
                     case 2:
-                        Thread.Sleep(100);
+                        Console.WriteLine("Usted ha ingresado al apartado de productos\nQue desea hacer?");
+                        Thread.Sleep(500);
                         Console.WriteLine("1. Ver productos");
                         Thread.Sleep(100);
-                        Console.WriteLine("2. Ingresar lote");
+                        Console.WriteLine("2. Ver lote");
                         Thread.Sleep(100);
                         Console.WriteLine("3. salir");
                         opmneu = valEntre(1, 3);
@@ -59,20 +99,41 @@ namespace GestionInventario
                             Console.WriteLine("Productos");
                             Thread.Sleep(100);
                             mostrarInventario(Inventario);
-                            if (Inventario.Count > 0 && opmneu == 2)
+
+                            if (opmneu==2)
                             {
-                                Thread.Sleep(100);
-                                Console.WriteLine("Ingrese el código del producto:");
-                                codigo = valInt(1);
-                                if (!Inventario.ContainsKey(codigo))
+
+                                if (Inventario.Count > 0)
                                 {
                                     Thread.Sleep(100);
-                                    Console.WriteLine("Código de producto no encontrado.");
-                                    break;
+                                    Console.WriteLine("\n//////////////////////////////");
+                                    Console.WriteLine("Ingrese el código del producto");
+                                    Console.WriteLine("//////////////////////////////");
+                                    codigo = valEntre(1, Inventario.Count);
+                                    if (!Inventario.ContainsKey(codigo))
+                                    {
+                                        Thread.Sleep(100);
+                                        Console.WriteLine("Código de producto no encontrado.");
+                                        break;
+                                    }
+                                    Console.Clear();
+                                    Thread.Sleep(100);
+                                    Console.WriteLine("//////////////////////////////////////////////////");
+                                    Console.WriteLine($"Usted ha seleccionado el producto con el codigo: {codigo} ");
+                                    Console.WriteLine("//////////////////////////////////////////////////\n");
+                                    Thread.Sleep(300);
+                                    Console.WriteLine("1. Ver lotes existentes");
+                                    Thread.Sleep(100);
+                                    Console.WriteLine("2. Ver historial de lotes");
+                                    Thread.Sleep(100);
+                                    Console.WriteLine("3. Salir");
+                                    opmneu = valEntre(1, 3);
+
+                                    mostrarLotes(opmneu, Inventario, codigo);
                                 }
                                 else
                                 {
-                                    Inventario[codigo].Entrada();
+                                    Console.Clear();
                                 }
                             }
 
@@ -81,33 +142,35 @@ namespace GestionInventario
                             break;
                     case 3:
                         mostrarInventario(Inventario);
-                        
+
                         if (Inventario.Count > 0)
                         {
                             Thread.Sleep(100);
-                            Console.WriteLine("Ingrese el código del producto:");
-                            codigo = valInt(1);
+                            Console.WriteLine("\n//////////////////////////////");
+                            Console.WriteLine("Ingrese el código del producto");
+                            Console.WriteLine("//////////////////////////////");
+                            codigo = valEntre(1, Inventario.Count);
                             if (!Inventario.ContainsKey(codigo))
                             {
                                 Thread.Sleep(100);
                                 Console.WriteLine("Código de producto no encontrado.");
                                 break;
                             }
+                            Console.Clear();
                             Thread.Sleep(100);
-                            Console.WriteLine("1. Ver lotes existentes");
+                            Console.WriteLine("//////////////////////////////////////////////////");
+                            Console.WriteLine($"Usted ha seleccionado el producto con el codigo: {codigo} ");
+                            Console.WriteLine("//////////////////////////////////////////////////\n");
                             Thread.Sleep(100);
-                            Console.WriteLine("2. Ver historial de lotes");
-                            Thread.Sleep(100);
-                            Console.WriteLine("3. Salir");
-                            opmneu = valEntre(1, 3);
 
-                            mostrarLotes(opmneu, Inventario, codigo);
+                            Inventario[codigo].Salida();
                         }
                         else
                         {
-                            Console.Clear();
+                            Console.WriteLine("Todavía no hay productos existentes");
                         }
-                        break;
+
+                            break;
                     case 4:
                         Thread.Sleep(100);
                         Console.WriteLine("Cerrando el programa, por favor espere");
@@ -123,6 +186,7 @@ namespace GestionInventario
                         Console.WriteLine("Opción inválida. Por favor, intente de nuevo.");
                         break;
                 }
+                Console.ReadKey();
                 Console.Clear();
             }
 
@@ -136,18 +200,25 @@ namespace GestionInventario
                  inventario[codigo].lotePEPS.Count == 0))
             {
                 Thread.Sleep(100);
+                Console.WriteLine("//////////////////////////////////////////////////");
+                Thread.Sleep(100);
                 Console.WriteLine("No hay productos o lotes disponibles para mostrar.");
+                Thread.Sleep(100);
+                Console.WriteLine("//////////////////////////////////////////////////");
                 return;
             }
+            else
+            {
+                if (opmenu == 1)
+                {
+                    inventario[codigo].mostrarLotesExistentes();
+                }
+                else if (opmenu == 2)
+                {
+                    inventario[codigo].mostrarHistorialLotes();
+                }
+            }
 
-            if (opmenu == 1)
-            {
-                inventario[codigo].mostrarLotesExistentes();
-            }
-            else if (opmenu == 2)
-            {
-                inventario[codigo].mostrarHistorialLotes();
-            }
         }
 
        static void mostrarInventario(Dictionary<int, Producto> inventario)
@@ -159,6 +230,10 @@ namespace GestionInventario
                 Console.WriteLine("/////////////////////////////////");
                 Thread.Sleep(100);
                 Console.WriteLine("No hay productos en el inventario.");
+                Thread.Sleep(100);
+                Console.WriteLine("/////////////////////////////////");
+                
+
                 Thread.Sleep(2000);
                 return;
             }
@@ -166,7 +241,6 @@ namespace GestionInventario
             foreach (var inve in inventario)
             {
                 Console.WriteLine($"Código: {inve.Key}. {inve.Value.ToString()} ");
-               
             }
         }
 
@@ -177,11 +251,15 @@ namespace GestionInventario
             Console.WriteLine("///////////////////////////////");
             Thread.Sleep(100);
             Console.WriteLine("Ingrese el nombre del producto");
+            Thread.Sleep(100);
+            Console.WriteLine("///////////////////////////////");
             string nombre = Console.ReadLine();
             Thread.Sleep(100);
-            Console.WriteLine("/////////////////////////////////");
+            Console.WriteLine("\n/////////////////////////////////");
             Thread.Sleep(100);
             Console.WriteLine("ingrese la categoria del producto");
+            Thread.Sleep(100);
+            Console.WriteLine("/////////////////////////////////");
             string categoria = Console.ReadLine();
 
             inventario.Add(inventario.Count + 1, new Producto( nombre, categoria));
