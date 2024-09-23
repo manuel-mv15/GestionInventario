@@ -8,27 +8,27 @@ namespace GestionInventario
 {
     internal class Producto
     {
-        string nombre { get; set; }
-        string categoria { get; set; }
+        string nombre { get; set; } // nombre del producto
+        string categoria { get; set; } // categoria del producto 
         int idLote = 1;
 
-       public Stack<Lote> loteUEPS = new Stack<Lote>();
-        public Queue<Lote> lotePEPS = new Queue<Lote>();
-        public List<Lote> loteCostoPromedio = new List<Lote>();
-        List<Lote> loteHistorial = new List<Lote>();
+       public Stack<Lote> loteUEPS = new Stack<Lote>(); // pila de lotes para el metodo UEPS
+        public Queue<Lote> lotePEPS = new Queue<Lote>(); // cola de lotes para el metodo PEPS
+        public List<Lote> loteCostoPromedio = new List<Lote>(); // Lista para el metodo costo promedio
+        List<Lote> loteHistorial = new List<Lote>(); // lista para guardar el historial de lotes entrantes 
 
         public Producto()
         {
 
         }
-        public Producto( string nombre, string categoria)
+        public Producto( string nombre, string categoria) // contructor para agragar producto
         {
             this.nombre = nombre;
             this.categoria = categoria;
-            Entrada();
+            Entrada(); // medoto para la entrada de lotes
         }
 
-        public void Entrada()
+        public void Entrada() // medoto para la entrada de lotes
         {
             int unidades;
             DateTime fecha;
@@ -41,6 +41,9 @@ namespace GestionInventario
             fecha = DateTime.Now;
             Console.WriteLine("Detalles del producto");
             detalle = Console.ReadLine();
+
+            // agreganmos los datos a todos los metodos 
+
             loteUEPS.Push(new Lote(idLote, unidades, fecha, precio, detalle));
             lotePEPS.Enqueue(new Lote(idLote, unidades, fecha, precio, detalle));
             loteCostoPromedio.Add(new Lote(idLote, unidades, fecha, precio, detalle));
@@ -48,14 +51,14 @@ namespace GestionInventario
             idLote++;
         }
 
-        public void Salida()
+        public void Salida() // metodo para vender el producto 
         {
             int opMetodo = 0;
 
 
-            int totalunidades = loteCostoPromedio.Sum(l => l.unidades);
+            int totalunidades = loteCostoPromedio.Sum(l => l.unidades); // obtenemos el numero total de unidades que hat de dicho pruducto
 
-            Console.WriteLine($"Unidades totales del producto: {totalunidades}");
+            Console.WriteLine($"Unidades totales del producto: {totalunidades}"); // mostramos las unidades existentes y preguntamos si desea continuar
             Console.WriteLine("1. continuar");
             Console.WriteLine("2. salir");
             opMetodo = valEntre(1, 2);
@@ -63,6 +66,7 @@ namespace GestionInventario
             if (opMetodo==1)
             {
 
+                // preguntamos con que metodo lo realizara
                 Thread.Sleep(100);
                 Console.WriteLine("Seleccione el metodo");
                 Thread.Sleep(100);
@@ -81,6 +85,7 @@ namespace GestionInventario
                 Console.WriteLine("Ingrese el numero de uinidades");
                 unidades = valEntre(1,totalunidades);
 
+                // segun lo seleccionado, enviamos los dados a dicha salida
                 switch (opMetodo)
                 {
                     case 1:// pila
@@ -105,30 +110,41 @@ namespace GestionInventario
 
             while (unidades > 0 && lotePEPS.Count > 0)
             {
-                Lote lote = lotePEPS.Peek();
+                Lote lote = lotePEPS.Peek(); // obtenemos el primer lote en entrar  
                 double costetotal = 0;
-                if (lote.unidades <= unidades)
+                if (lote.unidades <= unidades) // si las unidanes son , mayores o iguales a a las del lote actual 
                 {
-                    unidades -= lote.unidades;
+                    unidades -= lote.unidades; 
+
                     lote.unidades = 0;
 
-                    factura(unidades,lote);
 
-                    eliminarLoteUEPS(loteUEPS, lote);
+                    factura(unidades,lote);
+                    //funciones para eliminar de los otros metodos
+                    eliminarLoteUEPS(loteUEPS, lote); 
                     eliminarLoteCostePromedio(loteCostoPromedio, lote);
+                    
+                    // eliminamos el lote
                     lotePEPS.Dequeue();
                 }
                 else
                 {
+
                     factura(unidades, lote);
+                    
+                    // eliminamos las unidades de el lote
                     lote.unidades -= unidades;
+
+                    //funciones para eliminar de los otros metodos
                     eliminarParcialLoteUEPS(loteUEPS, lotePEPS.Peek(), unidades);
                     eliminarParcialLoteCostePromedio(loteCostoPromedio, lote, unidades);
                     unidades = 0;
                 }
+                
+
             }
-        }
-        
+            
+        }//funciones para eliminar de los otros metodos
         static void eliminarLotePEPS(Queue<Lote> lotePEPS, Lote loteEliminar)
         {
             Queue<Lote> loteTem = new Queue<Lote>();
@@ -175,34 +191,36 @@ namespace GestionInventario
 
             while (unidades > 0 && loteUEPS.Count > 0)
             {
-                Lote lote = loteUEPS.Peek();
+                Lote lote = loteUEPS.Peek();// obtenemos el primer lote en entrar  
 
-                if (lote.unidades <= unidades)
+                if (lote.unidades <= unidades)// si las unidanes son , mayores o iguales a a las del lote actual 
                 {
                     unidades -= lote.unidades;
                     lote.unidades = 0;
 
                     factura(unidades, lote);
-
+                    //funciones para eliminar de los otros metodos
                     eliminarLoteCostePromedio(loteCostoPromedio, lote);
-
                     eliminarLotePEPS(lotePEPS, lote);
+
+                    // eliminamos el lote
                     loteUEPS.Pop();
                 }
                 else
                 {
-
+                    // eliminamos las unidades de el lote
                     lote.unidades -= unidades;
 
                     factura(unidades, lote);
 
+                    //funciones para eliminar de los otros metodos
                     eliminarParcialLoteCostePromedio(loteCostoPromedio, lote, unidades);
                     eliminarParcialLotePEPS(lotePEPS, lote, unidades);
                     unidades = 0;
                 }
             }
         }
-
+        //funciones para eliminar de los otros metodos
         static void eliminarLoteUEPS(Stack<Lote> loteUEPS, Lote loteEliminar)
         {
             Stack<Lote> loteTemp = new Stack<Lote>();
@@ -259,9 +277,9 @@ namespace GestionInventario
             // Paso 2: Calcular el costo promedio
             double costoTotal = loteCostoPromedio.Sum(l => l.precio * l.unidades);
             double costoPromedio = costoTotal / totalunidades;
-
+            Console.Clear();
             Thread.Sleep(100);
-            Console.WriteLine($"El costo promedio por unidad es: {costoPromedio}");
+            Console.WriteLine($"El costo promedio por unidad es: {costoPromedio.ToString("$0.00")}");
 
             // Paso 3: Eliminar unidades desde el inventario
             for (int i = 0; i < loteCostoPromedio.Count && unidades > 0; i++)
@@ -273,7 +291,7 @@ namespace GestionInventario
                     // Si el lote tiene menos o igual unidades de las que queremos eliminar
                     unidades -= lote.unidades;  // Restamos las unidades
 
-                    factura(unidades, lote);
+                    factura(unidades, lote, costoPromedio);
 
                     eliminarLotePEPS(lotePEPS, lote);
                     eliminarLoteUEPS(loteUEPS, lote);
@@ -286,7 +304,7 @@ namespace GestionInventario
                     // Si el lote tiene más unidades de las que queremos eliminar
                     lote.unidades -= unidades;  // Restamos solo las unidades necesarias
 
-                    factura(unidades, lote);
+                    factura(unidades, lote,costoPromedio);
 
                     eliminarParcialLotePEPS(lotePEPS, lote, unidades);
                     eliminarParcialLoteUEPS(loteUEPS, lote, unidades);
@@ -297,7 +315,7 @@ namespace GestionInventario
             Thread.Sleep(100);
             Console.WriteLine("unidades eliminadas correctamente.");
         }
-
+        //funciones para eliminar de los otros metodos
         static void eliminarLoteCostePromedio(List<Lote> loteCostoPromedio, Lote loteEliminar)
         {
             Lote loteTem = loteCostoPromedio.FirstOrDefault(l => l.Equals(loteEliminar));
@@ -317,19 +335,26 @@ namespace GestionInventario
         }
         //---------------------------------------
 
+        // metodos para mostrar la factura
         void factura(int unidades,Lote lote)
         {
             Console.WriteLine(ToString()+" "+lote.factura(unidades));
         }
+        void factura(int unidades,Lote lote,double precion)
+        {
+            Console.WriteLine(ToString()+" "+lote.factura(unidades));
+        }
 
+        // mostramos el historial de lostes
         public void mostrarHistorialLotes()
         {
             for (int i = 0; i < loteHistorial.Count; i++)
             {
-                Console.WriteLine(loteCostoPromedio[i].ToString());
+                Console.WriteLine(loteHistorial[i].ToString());
             }
         }
 
+        // mostramos los lostes existentes
         public void mostrarLotesExistentes()
         {
             for (int i = 0; i < loteCostoPromedio.Count; i++)
@@ -343,6 +368,7 @@ namespace GestionInventario
             return $"Nombre: {this.nombre}, Categoría: {this.categoria}";
         }
         
+        // validar que sea mayor o igual a 1
         static int valInt(int limit)
         {
             int numero = 0;
@@ -358,7 +384,7 @@ namespace GestionInventario
             }
             return numero;
         }
-
+        // validar entre rangos
         static int valEntre(int min, int max)
         {
             int numero = 0;
@@ -375,6 +401,7 @@ namespace GestionInventario
             return numero;
         }
 
+        // validar que sea mayor a 0.00
         static double valDou(int limit)
         {
             double numero = 0;
@@ -384,7 +411,7 @@ namespace GestionInventario
 
             while (!double.TryParse(entrada, out numero) || !(numero > limit))
             {
-                Console.WriteLine("Ingrese el numero mayor a {0} ", limit);
+                Console.WriteLine("Ingrese el numero mayor a {0} ", limit. ToString("0.00"));
                 Console.Write("Ingrese el numero: ");
                 entrada = Console.ReadLine();
             }
